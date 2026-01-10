@@ -1,0 +1,84 @@
+{
+  "title": "기본 설문조사",
+  "description": "SurveyJS를 사용한 기본 설문 예제입니다.",
+  "logoPosition": "right",
+  "pages": [
+    {
+      "name": "page1",
+      "elements": [
+        {
+          "type": "text",
+          "name": "name",
+          "title": "이름을 입력해주세요",
+          "isRequired": true,
+          "placeholder": "홍길동"
+        },
+        {
+          "type": "text",
+          "name": "email",
+          "title": "이메일 주소",
+          "isRequired": true,
+          "inputType": "email",
+          "placeholder": "example@email.com",
+          "validators": [
+            {
+              "type": "email",
+              "text": "올바른 이메일 주소를 입력해주세요"
+            }
+          ]
+        },
+        {
+          "type": "radiogroup",
+          "name": "satisfaction",
+          "title": "서비스 만족도를 선택해주세요",
+          "isRequired": true,
+          "choices": [
+            {
+              "value": "5",
+              "text": "매우 만족"
+            },
+            {
+              "value": "4",
+              "text": "만족"
+            },
+            {
+              "value": "3",
+              "text": "보통"
+            },
+            {
+              "value": "2",
+              "text": "불만족"
+            },
+            {
+              "value": "1",
+              "text": "매우 불만족"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "name": "interests",
+          "title": "관심 있는 분야를 선택해주세요 (복수 선택 가능)",
+          "choices": [
+            "웹 개발",
+            "모바일 앱",
+            "데이터 분석",
+            "AI/머신러닝",
+            "클라우드",
+            "기타"
+          ]
+        },
+        {
+          "type": "comment",
+          "name": "feedback",
+          "title": "추가 의견이나 제안사항이 있으시면 작성해주세요",
+          "rows": 4
+        }
+      ]
+    }
+  ],
+  "showProgressBar": "top",
+  "progressBarType": "buttons",
+  "completeText": "제출하기",
+  "showQuestionNumbers": "off"
+}

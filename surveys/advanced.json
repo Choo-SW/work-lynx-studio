@@ -1,0 +1,144 @@
+{
+  "title": "고급 설문조사",
+  "description": "조건부 로직과 다양한 질문 유형을 포함한 고급 설문 예제입니다.",
+  "pages": [
+    {
+      "name": "personalInfo",
+      "title": "개인 정보",
+      "elements": [
+        {
+          "type": "text",
+          "name": "fullname",
+          "title": "성명",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "age",
+          "title": "나이",
+          "inputType": "number",
+          "min": 1,
+          "max": 120,
+          "isRequired": true
+        },
+        {
+          "type": "dropdown",
+          "name": "gender",
+          "title": "성별",
+          "choices": ["남성", "여성", "기타", "응답 안함"],
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "experience",
+      "title": "경험 정보",
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "hasExperience",
+          "title": "프로그래밍 경험이 있으신가요?",
+          "choices": [
+            {
+              "value": "yes",
+              "text": "예"
+            },
+            {
+              "value": "no",
+              "text": "아니오"
+            }
+          ],
+          "isRequired": true
+        },
+        {
+          "type": "checkbox",
+          "name": "languages",
+          "title": "사용 가능한 프로그래밍 언어를 선택해주세요",
+          "visibleIf": "{hasExperience} = 'yes'",
+          "choices": [
+            "JavaScript",
+            "TypeScript",
+            "Python",
+            "Java",
+            "C++",
+            "Go",
+            "Rust",
+            "기타"
+          ]
+        },
+        {
+          "type": "text",
+          "name": "yearsExperience",
+          "title": "프로그래밍 경력 (년)",
+          "visibleIf": "{hasExperience} = 'yes'",
+          "inputType": "number",
+          "min": 0,
+          "max": 50
+        },
+        {
+          "type": "rating",
+          "name": "skillLevel",
+          "title": "본인의 프로그래밍 실력을 평가해주세요",
+          "visibleIf": "{hasExperience} = 'yes'",
+          "rateMin": 1,
+          "rateMax": 10,
+          "minRateDescription": "초보",
+          "maxRateDescription": "전문가"
+        }
+      ]
+    },
+    {
+      "name": "preferences",
+      "title": "선호도",
+      "elements": [
+        {
+          "type": "matrix",
+          "name": "frameworks",
+          "title": "다음 프레임워크/라이브러리에 대한 선호도를 선택해주세요",
+          "columns": [
+            "매우 싫어함",
+            "싫어함",
+            "보통",
+            "좋아함",
+            "매우 좋아함"
+          ],
+          "rows": [
+            "React",
+            "Vue",
+            "Angular",
+            "Svelte",
+            "Next.js"
+          ]
+        },
+        {
+          "type": "boolean",
+          "name": "newsletter",
+          "title": "뉴스레터 구독을 희망하시나요?",
+          "labelTrue": "예, 구독하겠습니다",
+          "labelFalse": "아니오"
+        },
+        {
+          "type": "file",
+          "name": "resume",
+          "title": "이력서를 첨부해주세요 (선택사항)",
+          "acceptedTypes": ".pdf,.doc,.docx",
+          "maxSize": 5242880
+        },
+        {
+          "type": "comment",
+          "name": "additionalComments",
+          "title": "추가 의견",
+          "rows": 5
+        }
+      ]
+    }
+  ],
+  "showProgressBar": "top",
+  "progressBarType": "pages",
+  "showQuestionNumbers": "on",
+  "questionStartIndex": "1",
+  "completeText": "설문 완료",
+  "pagePrevText": "이전",
+  "pageNextText": "다음",
+  "showPrevButton": true
+}

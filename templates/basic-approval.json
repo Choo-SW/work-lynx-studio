@@ -1,0 +1,48 @@
+{
+  "title": "기본 전자결재 양식",
+  "description": "가장 기본적인 전자결재 양식 템플릿입니다.",
+  "pages": [
+    {
+      "name": "page1",
+      "elements": [
+        {
+          "type": "text",
+          "name": "title",
+          "title": "제목",
+          "isRequired": true,
+          "placeholder": "결재 제목을 입력하세요"
+        },
+        {
+          "type": "text",
+          "name": "requester",
+          "title": "신청자",
+          "isRequired": true,
+          "readOnly": true,
+          "defaultValue": "홍길동"
+        },
+        {
+          "type": "text",
+          "name": "department",
+          "title": "부서",
+          "isRequired": true,
+          "readOnly": true
+        },
+        {
+          "type": "text",
+          "name": "requestDate",
+          "title": "신청일",
+          "inputType": "date",
+          "defaultValueExpression": "today()",
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "content",
+          "title": "결재 내용",
+          "isRequired": true,
+          "rows": 5
+        }
+      ]
+    }
+  ]
+}

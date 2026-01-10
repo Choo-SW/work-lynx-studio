@@ -1,0 +1,92 @@
+{
+  "title": "품의서",
+  "description": "구매 품의 및 지출 요청을 위한 템플릿입니다.",
+  "pages": [
+    {
+      "name": "basicInfo",
+      "title": "기본 정보",
+      "elements": [
+        {
+          "type": "text",
+          "name": "requester",
+          "title": "신청자",
+          "isRequired": true,
+          "readOnly": true
+        },
+        {
+          "type": "text",
+          "name": "department",
+          "title": "부서",
+          "isRequired": true,
+          "readOnly": true
+        },
+        {
+          "type": "text",
+          "name": "requestDate",
+          "title": "신청일",
+          "inputType": "date",
+          "defaultValueExpression": "today()",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "purchaseInfo",
+      "title": "품의 내역",
+      "elements": [
+        {
+          "type": "matrixdynamic",
+          "name": "items",
+          "title": "품목",
+          "isRequired": true,
+          "columns": [
+            {
+              "name": "itemName",
+              "title": "품명",
+              "cellType": "text",
+              "isRequired": true
+            },
+            {
+              "name": "quantity",
+              "title": "수량",
+              "cellType": "text",
+              "inputType": "number",
+              "isRequired": true
+            },
+            {
+              "name": "unitPrice",
+              "title": "단가",
+              "cellType": "text",
+              "inputType": "number",
+              "isRequired": true
+            },
+            {
+              "name": "amount",
+              "title": "금액",
+              "cellType": "expression",
+              "expression": "{row.quantity} * {row.unitPrice}"
+            }
+          ],
+          "rowCount": 1,
+          "minRowCount": 1,
+          "addRowText": "+ 항목 추가"
+        },
+        {
+          "type": "expression",
+          "name": "totalAmount",
+          "title": "총 금액",
+          "expression": "sumInArray({items}, 'amount')",
+          "displayStyle": "currency",
+          "currency": "KRW"
+        },
+        {
+          "type": "comment",
+          "name": "purpose",
+          "title": "품의 목적",
+          "isRequired": true,
+          "rows": 3
+        }
+      ]
+    }
+  ]
+}

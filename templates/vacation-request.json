@@ -1,0 +1,67 @@
+{
+  "title": "휴가 신청서",
+  "description": "연차/반차 휴가 신청을 위한 템플릿입니다.",
+  "pages": [
+    {
+      "name": "page1",
+      "elements": [
+        {
+          "type": "text",
+          "name": "requester",
+          "title": "신청자",
+          "isRequired": true,
+          "readOnly": true
+        },
+        {
+          "type": "text",
+          "name": "department",
+          "title": "부서",
+          "isRequired": true,
+          "readOnly": true
+        },
+        {
+          "type": "dropdown",
+          "name": "vacationType",
+          "title": "휴가 종류",
+          "isRequired": true,
+          "choices": [
+            "연차",
+            "반차(오전)",
+            "반차(오후)",
+            "병가",
+            "경조사",
+            "공가"
+          ]
+        },
+        {
+          "type": "text",
+          "name": "startDate",
+          "title": "시작일",
+          "inputType": "date",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "endDate",
+          "title": "종료일",
+          "inputType": "date",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "days",
+          "title": "사용 일수",
+          "inputType": "number",
+          "isRequired": true
+        },
+        {
+          "type": "comment",
+          "name": "reason",
+          "title": "휴가 사유",
+          "isRequired": true,
+          "rows": 3
+        }
+      ]
+    }
+  ]
+}

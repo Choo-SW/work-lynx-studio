@@ -1,0 +1,258 @@
+{
+  "title": "지출결의서",
+  "description": "Lynx Studio - Legacy ERP 연동 지출결의서 (시나리오 4.1)",
+  "logoPosition": "right",
+  "pages": [
+    {
+      "name": "basicInfo",
+      "title": "기본 정보",
+      "elements": [
+        {
+          "type": "text",
+          "name": "requestDate",
+          "title": "신청일",
+          "inputType": "date",
+          "defaultValueExpression": "today()",
+          "isRequired": true,
+          "readOnly": true
+        },
+        {
+          "type": "text",
+          "name": "requesterName",
+          "title": "신청자",
+          "isRequired": true,
+          "defaultValue": "홍길동",
+          "readOnly": true,
+          "description": "SSO 인증 정보에서 자동 입력"
+        },
+        {
+          "type": "text",
+          "name": "department",
+          "title": "부서",
+          "isRequired": true,
+          "defaultValue": "IT개발팀",
+          "readOnly": true
+        }
+      ]
+    },
+    {
+      "name": "projectInfo",
+      "title": "프로젝트 정보",
+      "elements": [
+        {
+          "type": "dropdown",
+          "name": "projectCode",
+          "title": "프로젝트 선택",
+          "isRequired": true,
+          "placeholder": "프로젝트를 선택하세요",
+          "choices": [
+            {
+              "value": "PRJ001",
+              "text": "신규 ERP 구축 프로젝트"
+            },
+            {
+              "value": "PRJ002",
+              "text": "차세대 그룹웨어 전환"
+            },
+            {
+              "value": "PRJ003",
+              "text": "클라우드 인프라 구축"
+            },
+            {
+              "value": "PRJ004",
+              "text": "AI 챗봇 개발"
+            }
+          ],
+          "description": "프로젝트 선택 시 Gateway Server가 Legacy ERP에서 예산 정보를 실시간 조회합니다."
+        },
+        {
+          "type": "panel",
+          "name": "budgetPanel",
+          "title": "예산 정보 (Legacy ERP 실시간 조회)",
+          "visibleIf": "{projectCode} notempty",
+          "elements": [
+            {
+              "type": "text",
+              "name": "totalBudget",
+              "title": "총 예산",
+              "inputType": "number",
+              "readOnly": true,
+              "defaultValue": "50000000",
+              "description": "Gateway Server → Legacy ERP API 조회 결과"
+            },
+            {
+              "type": "text",
+              "name": "usedBudget",
+              "title": "집행 금액",
+              "inputType": "number",
+              "readOnly": true,
+              "defaultValue": "32000000"
+            },
+            {
+              "type": "text",
+              "name": "remainingBudget",
+              "title": "잔여 예산",
+              "inputType": "number",
+              "readOnly": true,
+              "defaultValue": "18000000",
+              "description": "총 예산 - 집행 금액"
+            },
+            {
+              "type": "html",
+              "name": "budgetWarning",
+              "visibleIf": "{remainingBudget} < 5000000",
+              "html": "<div style='padding: 12px; background-color: #fff3cd; border-left: 4px solid #ffc107; color: #856404;'><strong>⚠️ 예산 부족 경고</strong><br/>잔여 예산이 500만원 미만입니다. 승인자 검토가 필요합니다.</div>"
+            }
+          ]
+        },
+        {
+          "type": "comment",
+          "name": "projectDescription",
+          "title": "지출 사유",
+          "visibleIf": "{projectCode} notempty",
+          "isRequired": true,
+          "rows": 3,
+          "placeholder": "상세한 지출 사유를 입력하세요"
+        }
+      ]
+    },
+    {
+      "name": "expenseDetails",
+      "title": "지출 내역",
+      "visibleIf": "{projectCode} notempty",
+      "elements": [
+        {
+          "type": "matrixdynamic",
+          "name": "expenseItems",
+          "title": "지출 항목",
+          "isRequired": true,
+          "columns": [
+            {
+              "name": "accountCode",
+              "title": "계정 과목",
+              "cellType": "dropdown",
+              "isRequired": true,
+              "choices": [
+                "110 - 여비교통비",
+                "120 - 접대비",
+                "130 - 통신비",
+                "140 - 소모품비",
+                "150 - 인쇄비",
+                "210 - 외주용역비",
+                "220 - 교육훈련비",
+                "310 - 소프트웨어 구입",
+                "320 - 하드웨어 구입"
+              ]
+            },
+            {
+              "name": "description",
+              "title": "적요",
+              "cellType": "text",
+              "isRequired": true,
+              "placeholder": "지출 항목 설명"
+            },
+            {
+              "name": "amount",
+              "title": "금액",
+              "cellType": "text",
+              "inputType": "number",
+              "isRequired": true,
+              "placeholder": "0"
+            },
+            {
+              "name": "vendor",
+              "title": "거래처",
+              "cellType": "text",
+              "isRequired": true,
+              "placeholder": "공급업체명"
+            }
+          ],
+          "rowCount": 1,
+          "minRowCount": 1,
+          "maxRowCount": 10,
+          "addRowText": "+ 항목 추가",
+          "removeRowText": "삭제"
+        },
+        {
+          "type": "expression",
+          "name": "totalAmount",
+          "title": "총 지출 금액",
+          "expression": "sumInArray({expenseItems}, 'amount')",
+          "displayStyle": "currency",
+          "currency": "KRW",
+          "readOnly": true,
+          "startWithNewLine": false
+        },
+        {
+          "type": "html",
+          "name": "budgetExceedWarning",
+          "visibleIf": "{totalAmount} > {remainingBudget}",
+          "html": "<div style='padding: 12px; background-color: #f8d7da; border-left: 4px solid #dc3545; color: #721c24;'><strong>❌ 예산 초과</strong><br/>지출 금액이 잔여 예산을 초과합니다. 예산 추가 승인이 필요합니다.</div>"
+        }
+      ]
+    },
+    {
+      "name": "attachments",
+      "title": "첨부 파일",
+      "visibleIf": "{projectCode} notempty",
+      "elements": [
+        {
+          "type": "file",
+          "name": "invoiceFiles",
+          "title": "견적서/청구서 첨부",
+          "isRequired": true,
+          "acceptedTypes": ".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx",
+          "maxSize": 10485760,
+          "allowMultiple": true,
+          "description": "최대 10MB, 최대 5개 파일"
+        },
+        {
+          "type": "comment",
+          "name": "additionalNotes",
+          "title": "추가 메모",
+          "rows": 3,
+          "placeholder": "승인자에게 전달할 추가 정보"
+        }
+      ]
+    },
+    {
+      "name": "confirmation",
+      "title": "제출 확인",
+      "visibleIf": "{projectCode} notempty and {expenseItems} notempty",
+      "elements": [
+        {
+          "type": "html",
+          "name": "summaryInfo",
+          "html": "<div style='padding: 16px; background-color: #e7f3ff; border-radius: 8px;'><h3 style='margin-top: 0;'>📋 결재 요청 요약</h3><ul><li><strong>프로젝트:</strong> {projectCode}</li><li><strong>총 지출 금액:</strong> {totalAmount:currency}</li><li><strong>잔여 예산:</strong> {remainingBudget:currency}</li></ul></div>"
+        },
+        {
+          "type": "boolean",
+          "name": "confirmSubmit",
+          "title": "위 내용으로 전자결재를 요청합니다.",
+          "isRequired": true,
+          "labelTrue": "확인",
+          "labelFalse": "미확인"
+        },
+        {
+          "type": "html",
+          "name": "gatewayInfo",
+          "html": "<div style='padding: 12px; background-color: #f8f9fa; border-left: 4px solid #6c757d; font-size: 0.9em;'><strong>🔗 Lynx Studio Gateway Server</strong><br/>제출 시 다음 작업이 자동으로 수행됩니다:<br/>1. Legacy ERP에 전표 데이터 생성 요청<br/>2. ERP 전표 번호 수신 및 저장<br/>3. 결재 라인 자동 설정<br/>4. 승인 완료 시 ERP 전표 상태 자동 업데이트</div>"
+        }
+      ]
+    }
+  ],
+  "showProgressBar": "top",
+  "progressBarType": "pages",
+  "showQuestionNumbers": "on",
+  "questionStartIndex": "1",
+  "completeText": "전자결재 제출",
+  "pagePrevText": "이전",
+  "pageNextText": "다음",
+  "showPrevButton": true,
+  "showNavigationButtons": "bottom",
+  "questionsOnPageMode": "singlePage",
+  "firstPageIsStarted": false,
+  "maxTimeToFinish": 1800,
+  "showTimerPanel": "top",
+  "showTimerPanelMode": "survey"
+}
