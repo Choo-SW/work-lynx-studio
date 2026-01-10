@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
+import { Button, Typography, Divider, Spin, Alert, Tag } from "antd";
+import { ArrowLeftOutlined, DownloadOutlined, EyeOutlined, LoadingOutlined } from "@ant-design/icons";
 import FormBuilder from "@/components/FormBuilder";
 
 // 템플릿 import
@@ -9,6 +11,8 @@ import basicApprovalTemplate from "@/templates/basic-approval.json";
 import vacationRequestTemplate from "@/templates/vacation-request.json";
 import purchaseRequestTemplate from "@/templates/purchase-request.json";
 import expenseApprovalTemplate from "@/surveys/expense-approval.json";
+
+const { Title, Text } = Typography;
 
 const templates: Record<string, any> = {
   "basic-approval": basicApprovalTemplate,
@@ -64,45 +68,62 @@ export default function TemplateBuilderPage({ params }: { params: Promise<{ id: 
 
   if (!templateJson) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">템플릿을 로딩 중...</p>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}>
+        <div style={{ textAlign: "center" }}>
+          <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
+          <p style={{ marginTop: 16, color: "#666" }}>템플릿을 로딩 중...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="h-screen flex flex-col">
+    <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
       {/* 헤더 */}
-      <div className="bg-white border-b shadow-sm px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <button
+      <div style={{ 
+        background: "#fff", 
+        borderBottom: "1px solid #e8e8e8", 
+        padding: "12px 24px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between"
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <Button
+            type="link"
+            icon={<ArrowLeftOutlined />}
             onClick={() => router.push("/builder/template")}
-            className="text-blue-600 hover:text-blue-800 font-medium"
+            style={{ paddingLeft: 0 }}
           >
-            ← 템플릿 목록
-          </button>
-          <div className="h-6 w-px bg-gray-300"></div>
+            템플릿 목록
+          </Button>
+          <Divider type="vertical" style={{ height: 24 }} />
           <div>
-            <h1 className="text-xl font-bold text-gray-900">
-              {templateName} - Form Builder
-            </h1>
-            <p className="text-xs text-gray-500">템플릿 기반 편집 모드</p>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <Title level={4} style={{ margin: 0 }}>
+                {templateName}
+              </Title>
+              <Tag color="purple">템플릿 모드</Tag>
+            </div>
+            <Text type="secondary" style={{ fontSize: 12 }}>
+              Form Builder - 템플릿 기반 편집
+            </Text>
           </div>
         </div>
         
-        <div className="flex items-center gap-3">
-          <button
+        <div style={{ display: "flex", gap: 12 }}>
+          <Button
+            icon={<DownloadOutlined />}
             onClick={handleExport}
             disabled={!savedJson}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
+            style={{ background: "#52c41a", color: "#fff", border: "none" }}
           >
-            💾 JSON 내보내기
-          </button>
+            JSON 내보내기
+          </Button>
           
-          <button
+          <Button
+            type="primary"
+            icon={<EyeOutlined />}
             onClick={() => {
               const json = localStorage.getItem('lastCreatedForm');
               if (json) {
@@ -110,22 +131,29 @@ export default function TemplateBuilderPage({ params }: { params: Promise<{ id: 
                 console.log('Saved Form JSON:', JSON.parse(json));
               }
             }}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
           >
-            👁️ 미리보기
-          </button>
+            미리보기
+          </Button>
         </div>
       </div>
 
       {/* Form Builder */}
-      <div className="flex-1 overflow-hidden">
+      <div style={{ flex: 1, overflow: "hidden" }}>
         <FormBuilder json={templateJson} onSave={handleSave} />
       </div>
 
       {/* 안내 메시지 */}
-      <div className="bg-green-50 border-t border-green-200 px-6 py-2 text-sm text-green-800">
-        <strong>✨ 템플릿 모드:</strong> 기본 구조가 로드되었습니다. 
-        필드를 추가하거나 수정하여 원하는 양식을 완성하세요.
+      <div style={{ 
+        background: "#f6ffed", 
+        borderTop: "1px solid #b7eb8f",
+        padding: "8px 24px"
+      }}>
+        <Alert
+          message={<span><strong>✨ 템플릿 모드:</strong> 기본 구조가 로드되었습니다. 필드를 추가하거나 수정하여 원하는 양식을 완성하세요.</span>}
+          type="success"
+          showIcon={false}
+          style={{ border: "none", background: "transparent", padding: 0 }}
+        />
       </div>
     </div>
   );

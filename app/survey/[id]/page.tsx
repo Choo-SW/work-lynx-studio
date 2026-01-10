@@ -2,6 +2,8 @@
 
 import React, { use, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Spin, Result, Button, Card } from "antd";
+import { LoadingOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import SurveyComponent from "@/components/SurveyComponent";
 import { Model } from "survey-core";
 
@@ -46,10 +48,10 @@ export default function SurveyPage({ params }: { params: Promise<{ id: string }>
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">양식을 불러오는 중...</p>
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ textAlign: "center" }}>
+          <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
+          <p style={{ marginTop: 16, color: "#666" }}>양식을 불러오는 중...</p>
         </div>
       </div>
     );
@@ -57,34 +59,36 @@ export default function SurveyPage({ params }: { params: Promise<{ id: string }>
 
   if (error || !surveyJson) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-red-600 mb-4">양식을 찾을 수 없습니다</h1>
-          <p className="text-gray-600 mb-6">요청하신 양식 ID: {resolvedParams.id}</p>
-          <button
-            onClick={() => router.push("/")}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-          >
-            홈으로 돌아가기
-          </button>
-        </div>
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+        <Result
+          status="404"
+          title="양식을 찾을 수 없습니다"
+          subTitle={`요청하신 양식 ID: ${resolvedParams.id}`}
+          extra={
+            <Button type="primary" onClick={() => router.push("/")}>
+              홈으로 돌아가기
+            </Button>
+          }
+        />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        <button
+    <div style={{ minHeight: "100vh", background: "#f0f2f5", padding: "32px 24px" }}>
+      <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+        <Button
+          type="link"
+          icon={<ArrowLeftOutlined />}
           onClick={() => router.push("/")}
-          className="mb-6 text-blue-600 hover:text-blue-800 flex items-center gap-2"
+          style={{ marginBottom: 24, paddingLeft: 0 }}
         >
-          ← 뒤로 가기
-        </button>
+          뒤로 가기
+        </Button>
         
-        <div className="bg-white rounded-lg shadow-lg p-6">
+        <Card>
           <SurveyComponent json={surveyJson} onComplete={handleSurveyComplete} />
-        </div>
+        </Card>
       </div>
     </div>
   );

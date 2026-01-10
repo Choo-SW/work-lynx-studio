@@ -2,7 +2,11 @@
 
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { Button, Typography, Divider, Alert } from "antd";
+import { ArrowLeftOutlined, DownloadOutlined, EyeOutlined, SaveOutlined } from "@ant-design/icons";
 import FormBuilder from "@/components/FormBuilder";
+
+const { Title } = Typography;
 
 export default function BuilderPage() {
   const router = useRouter();
@@ -31,32 +35,44 @@ export default function BuilderPage() {
   }, [savedJson]);
 
   return (
-    <div className="h-screen flex flex-col">
+    <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
       {/* 헤더 */}
-      <div className="bg-white border-b shadow-sm px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <button
+      <div style={{ 
+        background: "#fff", 
+        borderBottom: "1px solid #e8e8e8", 
+        padding: "12px 24px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between"
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <Button
+            type="link"
+            icon={<ArrowLeftOutlined />}
             onClick={() => router.push("/")}
-            className="text-blue-600 hover:text-blue-800 font-medium"
+            style={{ paddingLeft: 0 }}
           >
-            ← 홈으로
-          </button>
-          <div className="h-6 w-px bg-gray-300"></div>
-          <h1 className="text-xl font-bold text-gray-900">
+            홈으로
+          </Button>
+          <Divider type="vertical" style={{ height: 24 }} />
+          <Title level={4} style={{ margin: 0 }}>
             Lynx Studio Form Builder
-          </h1>
+          </Title>
         </div>
         
-        <div className="flex items-center gap-3">
-          <button
+        <div style={{ display: "flex", gap: 12 }}>
+          <Button
+            icon={<DownloadOutlined />}
             onClick={handleExport}
             disabled={!savedJson}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
+            style={{ background: "#52c41a", color: "#fff", border: "none" }}
           >
-            💾 JSON 내보내기
-          </button>
+            JSON 내보내기
+          </Button>
           
-          <button
+          <Button
+            type="primary"
+            icon={<EyeOutlined />}
             onClick={() => {
               const json = localStorage.getItem('lastCreatedForm');
               if (json) {
@@ -64,22 +80,29 @@ export default function BuilderPage() {
                 console.log('Saved Form JSON:', JSON.parse(json));
               }
             }}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
           >
-            👁️ 미리보기
-          </button>
+            미리보기
+          </Button>
         </div>
       </div>
 
       {/* Form Builder */}
-      <div className="flex-1 overflow-hidden">
+      <div style={{ flex: 1, overflow: "hidden" }}>
         <FormBuilder onSave={handleSave} />
       </div>
 
       {/* 안내 메시지 */}
-      <div className="bg-blue-50 border-t border-blue-200 px-6 py-2 text-sm text-blue-800">
-        <strong>💡 팁:</strong> 왼쪽 도구상자에서 필드를 드래그하여 양식을 만들 수 있습니다. 
-        조건부 로직(visibleIf)은 Logic 탭에서 설정하세요.
+      <div style={{ 
+        background: "#e6f7ff", 
+        borderTop: "1px solid #91d5ff",
+        padding: "8px 24px"
+      }}>
+        <Alert
+          message={<span><strong>💡 팁:</strong> 왼쪽 도구상자에서 필드를 드래그하여 양식을 만들 수 있습니다. 조건부 로직(visibleIf)은 Logic 탭에서 설정하세요.</span>}
+          type="info"
+          showIcon={false}
+          style={{ border: "none", background: "transparent", padding: 0 }}
+        />
       </div>
     </div>
   );
