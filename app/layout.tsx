@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { ConfigProvider } from "antd";
+import koKR from "antd/locale/ko_KR";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,7 +16,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        <AntdRegistry>
+          <ConfigProvider
+            locale={koKR}
+            theme={{
+              token: {
+                colorPrimary: "#1890ff",
+                borderRadius: 6,
+                fontSize: 14,
+              },
+            }}
+          >
+            {children}
+          </ConfigProvider>
+        </AntdRegistry>
+      </body>
     </html>
   );
 }
