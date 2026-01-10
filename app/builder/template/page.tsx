@@ -155,7 +155,7 @@ export default function TemplateSelectorPage() {
 
           {/* 사용 팁 */}
           <Alert
-            message={
+            title={
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <BulbOutlined />
                 <Text strong>템플릿 사용 팁</Text>
