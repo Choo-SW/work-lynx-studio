@@ -1,0 +1,84 @@
+{
+  "name": "기본 결재 프로세스 (기안-검토-승인)",
+  "description": "가장 기본적인 전자결재 흐름입니다.",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "start",
+      "position": { "x": 250, "y": 50 },
+      "data": {
+        "label": "기안",
+        "description": "문서 작성 및 제출"
+      }
+    },
+    {
+      "id": "2",
+      "type": "review",
+      "position": { "x": 250, "y": 180 },
+      "data": {
+        "label": "부서장 검토",
+        "description": "담당 부서장이 검토합니다",
+        "approver": {
+          "id": "2",
+          "name": "김부장",
+          "department": "재무팀",
+          "position": "부장"
+        },
+        "reviewConfig": {
+          "canReject": true,
+          "isRequired": true,
+          "parallelMode": false
+        }
+      }
+    },
+    {
+      "id": "3",
+      "type": "approval",
+      "position": { "x": 250, "y": 310 },
+      "data": {
+        "label": "대표이사 승인",
+        "description": "최종 승인 및 문서번호 채번",
+        "approver": {
+          "id": "3",
+          "name": "이대표",
+          "department": "경영지원실",
+          "position": "대표이사"
+        },
+        "approvalConfig": {
+          "generateDocNumber": true,
+          "lockContent": true,
+          "docNumberPrefix": "APPR-2024-"
+        }
+      }
+    },
+    {
+      "id": "4",
+      "type": "end",
+      "position": { "x": 250, "y": 440 },
+      "data": {
+        "label": "완료",
+        "description": "결재 프로세스 종료"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1-2",
+      "source": "1",
+      "target": "2",
+      "label": "제출"
+    },
+    {
+      "id": "e2-3",
+      "source": "2",
+      "target": "3",
+      "label": "승인"
+    },
+    {
+      "id": "e3-4",
+      "source": "3",
+      "target": "4",
+      "label": "완료"
+    }
+  ]
+}

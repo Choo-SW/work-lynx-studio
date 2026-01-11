@@ -1,0 +1,208 @@
+{
+  "name": "외부 발송 결재 프로세스 (기안-검토-합의-시행-접수-기안-검토-승인)",
+  "description": "외부 기관에 공문을 발송하고 회신을 접수하는 복합 프로세스입니다.",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "start",
+      "position": { "x": 100, "y": 50 },
+      "data": {
+        "label": "기안 (외부 발송)",
+        "description": "외부 기관 발송용 문서 작성"
+      }
+    },
+    {
+      "id": "2",
+      "type": "review",
+      "position": { "x": 100, "y": 180 },
+      "data": {
+        "label": "부서장 검토",
+        "description": "담당 부서장 검토",
+        "approver": {
+          "id": "2",
+          "name": "김부장",
+          "department": "총무팀",
+          "position": "부장"
+        },
+        "reviewConfig": {
+          "canReject": true,
+          "isRequired": true,
+          "parallelMode": false
+        }
+      }
+    },
+    {
+      "id": "3",
+      "type": "agreement",
+      "position": { "x": 100, "y": 310 },
+      "data": {
+        "label": "법무팀 합의",
+        "description": "법무 검토 (반려 불가)",
+        "approver": {
+          "id": "3",
+          "name": "박차장",
+          "department": "법무팀",
+          "position": "차장"
+        },
+        "reviewConfig": {
+          "canReject": false,
+          "isRequired": true,
+          "parallelMode": false
+        }
+      }
+    },
+    {
+      "id": "4",
+      "type": "execution",
+      "position": { "x": 100, "y": 440 },
+      "data": {
+        "label": "시행 (외부 발송)",
+        "description": "문서번호 채번 후 외부 기관에 발송",
+        "approver": {
+          "id": "4",
+          "name": "이대표",
+          "department": "경영지원실",
+          "position": "대표이사"
+        },
+        "approvalConfig": {
+          "generateDocNumber": true,
+          "lockContent": true,
+          "docNumberPrefix": "DOC-2024-"
+        }
+      }
+    },
+    {
+      "id": "5",
+      "type": "receipt",
+      "position": { "x": 400, "y": 440 },
+      "data": {
+        "label": "접수 (회신 수신)",
+        "description": "외부 기관 회신 문서 접수",
+        "approver": {
+          "id": "5",
+          "name": "최과장",
+          "department": "총무팀",
+          "position": "과장"
+        },
+        "receiptConfig": {
+          "generateReceiptNumber": true,
+          "recipientDepartment": "총무팀",
+          "restartApproval": true
+        }
+      }
+    },
+    {
+      "id": "6",
+      "type": "start",
+      "position": { "x": 400, "y": 310 },
+      "data": {
+        "label": "내부 기안",
+        "description": "접수된 회신에 대한 내부 처리 기안"
+      }
+    },
+    {
+      "id": "7",
+      "type": "review",
+      "position": { "x": 400, "y": 180 },
+      "data": {
+        "label": "부서장 검토",
+        "description": "내부 처리 방안 검토",
+        "approver": {
+          "id": "7",
+          "name": "김부장",
+          "department": "총무팀",
+          "position": "부장"
+        },
+        "reviewConfig": {
+          "canReject": true,
+          "isRequired": true,
+          "parallelMode": false
+        }
+      }
+    },
+    {
+      "id": "8",
+      "type": "approval",
+      "position": { "x": 400, "y": 50 },
+      "data": {
+        "label": "최종 승인",
+        "description": "내부 처리 승인 (문서번호 미채번)",
+        "approver": {
+          "id": "8",
+          "name": "이대표",
+          "department": "경영지원실",
+          "position": "대표이사"
+        },
+        "approvalConfig": {
+          "generateDocNumber": false,
+          "lockContent": true
+        }
+      }
+    },
+    {
+      "id": "9",
+      "type": "end",
+      "position": { "x": 250, "y": 600 },
+      "data": {
+        "label": "완료",
+        "description": "전체 프로세스 종료"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1-2",
+      "source": "1",
+      "target": "2",
+      "label": "제출"
+    },
+    {
+      "id": "e2-3",
+      "source": "2",
+      "target": "3",
+      "label": "검토 완료"
+    },
+    {
+      "id": "e3-4",
+      "source": "3",
+      "target": "4",
+      "label": "합의 완료"
+    },
+    {
+      "id": "e4-5",
+      "source": "4",
+      "target": "5",
+      "label": "외부 발송"
+    },
+    {
+      "id": "e5-6",
+      "source": "5",
+      "target": "6",
+      "label": "회신 접수"
+    },
+    {
+      "id": "e6-7",
+      "source": "6",
+      "target": "7",
+      "label": "내부 기안"
+    },
+    {
+      "id": "e7-8",
+      "source": "7",
+      "target": "8",
+      "label": "검토 완료"
+    },
+    {
+      "id": "e8-9",
+      "source": "8",
+      "target": "9",
+      "label": "승인 완료"
+    },
+    {
+      "id": "e4-9",
+      "source": "4",
+      "target": "9",
+      "label": "회신 불필요"
+    }
+  ]
+}

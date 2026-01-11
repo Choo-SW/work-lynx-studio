@@ -3,6 +3,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider } from "antd";
 import koKR from "antd/locale/ko_KR";
 import "./globals.css";
+import "@xyflow/react/dist/style.css";
 
 export const metadata: Metadata = {
   title: "TCCINS Work Lynx Studio - Form Builder",

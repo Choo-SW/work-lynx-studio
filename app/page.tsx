@@ -10,6 +10,10 @@ import {
   RocketOutlined,
   CloudServerOutlined,
   ApiOutlined,
+  BranchesOutlined,
+  CommentOutlined,
+  BulbOutlined,
+  FolderOpenOutlined,
 } from "@ant-design/icons";
 
 const { Title, Paragraph, Text } = Typography;
@@ -62,54 +66,221 @@ export default function Home() {
           </Card>
 
           {/* Form Builder */}
-          <Card title={<><FormOutlined /> 🛠️ Form Builder (LowCode 도구)</>}>
+          <Card title={<><FormOutlined /> 🛠️ Form Builder (다목적 양식 빌더)</>}>
             <Paragraph>
-              드래그 앤 드롭 방식으로 결재 양식을 직접 만들어 보세요.
+              카테고리별로 최적화된 양식 빌더로 다양한 업무 양식을 만들어 보세요.
             </Paragraph>
             
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              <Link href="/builder/template" style={{ textDecoration: "none" }}>
-                <Card hoverable style={{ border: "2px solid #722ed1" }}>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <AppstoreAddOutlined style={{ fontSize: 32, color: "#722ed1" }} />
-                      <Title level={4} style={{ margin: 0, color: "#722ed1" }}>
-                        템플릿으로 시작하기 <Tag color="purple">추천</Tag>
-                      </Title>
+            <Row gutter={[16, 16]}>
+              {/* 전자결재 양식 */}
+              <Col xs={24} sm={12}>
+                <Link href="/builder/approval" style={{ textDecoration: "none" }}>
+                  <Card hoverable style={{ height: "100%", border: "2px solid #1890ff" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <FileTextOutlined style={{ fontSize: 32, color: "#1890ff" }} />
+                        <Title level={4} style={{ margin: 0, color: "#1890ff" }}>
+                          📄 전자결재 양식
+                        </Title>
+                      </div>
+                      <Text type="secondary">기안, 품의, 지출결의 등 결재 문서 양식</Text>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                        <Tag color="#1890ff">결재선</Tag>
+                        <Tag color="#1890ff">금액 필드</Tag>
+                        <Tag color="#1890ff">첨부문서</Tag>
+                      </div>
                     </div>
-                    <Text type="secondary">
-                      미리 만들어진 전자결재 템플릿을 선택하고 필요한 항목만 수정
-                    </Text>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                      <Text>✓ 기본 전자결재, 휴가신청서, 품의서 등</Text>
-                      <Text>✓ 템플릿 기반으로 빠른 양식 제작</Text>
-                      <Text>✓ 필드 추가/수정/삭제 자유롭게</Text>
-                    </div>
-                  </div>
-                </Card>
-              </Link>
+                  </Card>
+                </Link>
+              </Col>
 
+              {/* 게시판 양식 */}
+              <Col xs={24} sm={12}>
+                <Link href="/builder/board" style={{ textDecoration: "none" }}>
+                  <Card hoverable style={{ height: "100%", border: "2px solid #52c41a" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <CommentOutlined style={{ fontSize: 32, color: "#52c41a" }} />
+                        <Title level={4} style={{ margin: 0, color: "#52c41a" }}>
+                          💬 게시판 양식
+                        </Title>
+                      </div>
+                      <Text type="secondary">공지사항, FAQ, 자료실 게시물 양식</Text>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                        <Tag color="#52c41a">카테고리</Tag>
+                        <Tag color="#52c41a">첨부파일</Tag>
+                        <Tag color="#52c41a">공개설정</Tag>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              </Col>
+
+              {/* 업무제안 양식 */}
+              <Col xs={24} sm={12}>
+                <Link href="/builder/proposal" style={{ textDecoration: "none" }}>
+                  <Card hoverable style={{ height: "100%", border: "2px solid #faad14" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <BulbOutlined style={{ fontSize: 32, color: "#faad14" }} />
+                        <Title level={4} style={{ margin: 0, color: "#faad14" }}>
+                          💡 업무제안 양식
+                        </Title>
+                      </div>
+                      <Text type="secondary">개선 제안, 아이디어 제출 양식</Text>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                        <Tag color="#faad14">현황분석</Tag>
+                        <Tag color="#faad14">개선방안</Tag>
+                        <Tag color="#faad14">기대효과</Tag>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              </Col>
+
+              {/* 문서관리 양식 */}
+              <Col xs={24} sm={12}>
+                <Link href="/builder/document" style={{ textDecoration: "none" }}>
+                  <Card hoverable style={{ height: "100%", border: "2px solid #722ed1" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <FolderOpenOutlined style={{ fontSize: 32, color: "#722ed1" }} />
+                        <Title level={4} style={{ margin: 0, color: "#722ed1" }}>
+                          📁 문서관리 양식
+                        </Title>
+                      </div>
+                      <Text type="secondary">문서 등록, 메타데이터 입력 양식</Text>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                        <Tag color="#722ed1">버전관리</Tag>
+                        <Tag color="#722ed1">보존기간</Tag>
+                        <Tag color="#722ed1">문서분류</Tag>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              </Col>
+            </Row>
+
+            <div style={{ marginTop: 16, textAlign: "center" }}>
               <Link href="/builder" style={{ textDecoration: "none" }}>
-                <Card hoverable style={{ border: "2px solid #52c41a" }}>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <BgColorsOutlined style={{ fontSize: 32, color: "#52c41a" }} />
-                      <Title level={4} style={{ margin: 0, color: "#52c41a" }}>
-                        빈 양식으로 시작하기
-                      </Title>
-                    </div>
-                    <Text type="secondary">
-                      처음부터 직접 양식을 디자인하고 JSON으로 내보내기
-                    </Text>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                      <Text>✓ 드래그 앤 드롭 필드 추가</Text>
-                      <Text>✓ 조건부 로직 시각적 설정</Text>
-                      <Text>✓ 실시간 미리보기</Text>
-                      <Text>✓ JSON 내보내기/가져오기</Text>
-                    </div>
+                <Card hoverable style={{ border: "1px solid #d9d9d9" }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12 }}>
+                    <AppstoreAddOutlined style={{ fontSize: 24 }} />
+                    <Text strong>모든 카테고리 보기</Text>
                   </div>
                 </Card>
               </Link>
+            </div>
+          </Card>
+
+          {/* Workflow Builder */}
+          <Card title={<><BranchesOutlined /> 🔄 Workflow Builder (다목적 프로세스 빌더)</>}>
+            <Paragraph>
+              React Flow를 사용하여 다양한 업무 프로세스를 시각적으로 디자인하세요.
+            </Paragraph>
+            
+            <Row gutter={[16, 16]}>
+              {/* 전자결재 */}
+              <Col xs={24} sm={12}>
+                <Link href="/workflow" style={{ textDecoration: "none" }}>
+                  <Card hoverable style={{ height: "100%", border: "2px solid #1890ff" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <FileTextOutlined style={{ fontSize: 24, color: "#1890ff" }} />
+                        <Title level={5} style={{ margin: 0, color: "#1890ff" }}>
+                          전자결재 <Tag color="blue">결재</Tag>
+                        </Title>
+                      </div>
+                      <Text type="secondary" style={{ fontSize: 13 }}>
+                        기안, 검토, 합의, 승인, 시행, 접수
+                      </Text>
+                      <div style={{ fontSize: 12 }}>
+                        <div>✓ 문서번호 자동 채번</div>
+                        <div>✓ 다단계 결재선</div>
+                        <div>✓ 반려 및 재상신</div>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              </Col>
+
+              {/* 게시판 */}
+              <Col xs={24} sm={12}>
+                <Link href="/workflow/board" style={{ textDecoration: "none" }}>
+                  <Card hoverable style={{ height: "100%", border: "2px solid #52c41a" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <CommentOutlined style={{ fontSize: 24, color: "#52c41a" }} />
+                        <Title level={5} style={{ margin: 0, color: "#52c41a" }}>
+                          게시판 <Tag color="green">콘텐츠</Tag>
+                        </Title>
+                      </div>
+                      <Text type="secondary" style={{ fontSize: 13 }}>
+                        작성, 검수, 게시, 상단고정, 보관
+                      </Text>
+                      <div style={{ fontSize: 12 }}>
+                        <div>✓ 게시물 생명주기 관리</div>
+                        <div>✓ 자동 보관 기능</div>
+                        <div>✓ 게시 기간 설정</div>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              </Col>
+
+              {/* 업무제안 */}
+              <Col xs={24} sm={12}>
+                <Link href="/workflow/proposal" style={{ textDecoration: "none" }}>
+                  <Card hoverable style={{ height: "100%", border: "2px solid #faad14" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <BulbOutlined style={{ fontSize: 24, color: "#faad14" }} />
+                        <Title level={5} style={{ margin: 0, color: "#faad14" }}>
+                          업무제안 <Tag color="orange">혁신</Tag>
+                        </Title>
+                      </div>
+                      <Text type="secondary" style={{ fontSize: 13 }}>
+                        제안, 평가, 투표, 실행, 보상
+                      </Text>
+                      <div style={{ fontSize: 12 }}>
+                        <div>✓ 제안서 심사 프로세스</div>
+                        <div>✓ 다수결 투표</div>
+                        <div>✓ 우수 제안 포상</div>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              </Col>
+
+              {/* 문서관리 */}
+              <Col xs={24} sm={12}>
+                <Link href="/workflow/document" style={{ textDecoration: "none" }}>
+                  <Card hoverable style={{ height: "100%", border: "2px solid #722ed1" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <FolderOpenOutlined style={{ fontSize: 24, color: "#722ed1" }} />
+                        <Title level={5} style={{ margin: 0, color: "#722ed1" }}>
+                          문서관리 <Tag color="purple">버전</Tag>
+                        </Title>
+                      </div>
+                      <Text type="secondary" style={{ fontSize: 13 }}>
+                        생성, 버전, 체크아웃, 체크인, 잠금
+                      </Text>
+                      <div style={{ fontSize: 12 }}>
+                        <div>✓ 자동 버전 관리</div>
+                        <div>✓ 동시 편집 방지</div>
+                        <div>✓ 변경 이력 추적</div>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              </Col>
+            </Row>
+
+            <div style={{ marginTop: 16, padding: 12, background: "#f0f5ff", borderRadius: 8 }}>
+              <Text strong style={{ color: "#1890ff" }}>
+                💡 각 워크플로우 타입별로 최적화된 노드와 설정을 제공합니다
+              </Text>
             </div>
           </Card>
 
