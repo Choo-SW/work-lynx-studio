@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Base path for reverse proxy
+  basePath: '/wlst',
+  assetPrefix: '/wlst',
+  
   // Windows 파일 시스템 문제 해결
   webpack: (config, { isServer, dev }) => {
     // 파일 시스템 캐싱 완전 비활성화

@@ -4,11 +4,11 @@
   "private": true,
   "description": "TCCINS Work Lynx Studio - LowCode Form Builder Module for Progressive Disclosure based SaaS-Legacy Integration",
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS='--max-old-space-size=4096' next dev",
-    "dev:clean": "rimraf .next && cross-env NODE_OPTIONS='--max-old-space-size=4096' next dev",
-    "dev:turbo": "cross-env NODE_OPTIONS='--max-old-space-size=4096' next dev --turbo",
+    "dev": "cross-env NODE_OPTIONS='--max-old-space-size=4096' next dev -p 3020",
+    "dev:clean": "rimraf .next && cross-env NODE_OPTIONS='--max-old-space-size=4096' next dev -p 3020",
+    "dev:turbo": "cross-env NODE_OPTIONS='--max-old-space-size=4096' next dev --turbo -p 3020",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3020",
     "lint": "next lint",
     "clean": "rimraf .next",
     "diagnose": "node scripts/diagnose-windows.js"
