@@ -19,6 +19,7 @@ export default function FormBuilder({ json, onSave }: FormBuilderProps) {
     onSaveRef.current = onSave;
   }, [onSave]);
 
+  // Creator 초기화 (한 번만 실행)
   useEffect(() => {
     const creatorOptions = {
       showLogicTab: true,
@@ -51,7 +52,14 @@ export default function FormBuilder({ json, onSave }: FormBuilderProps) {
     return () => {
       surveyCreator.dispose();
     };
-  }, [json]);
+  }, []); // 빈 배열로 변경 - 한 번만 실행
+
+  // JSON이 변경되면 creator에 업데이트 (creator 재생성 없이)
+  useEffect(() => {
+    if (creator && json) {
+      creator.JSON = json;
+    }
+  }, [creator, json]);
 
   if (!creator) {
     return (

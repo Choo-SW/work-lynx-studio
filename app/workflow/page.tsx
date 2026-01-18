@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useCallback, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   ReactFlow,
   MiniMap,
@@ -23,6 +24,7 @@ import {
   PlusOutlined,
   DeleteOutlined,
   LinkOutlined,
+  HomeOutlined,
 } from '@ant-design/icons';
 import CustomNode from '@/components/workflow/CustomNode';
 import { WorkflowNodeData, NodeType } from '@/types/workflow';
@@ -56,6 +58,7 @@ const initialNodes: Node[] = [
 const initialEdges: Edge[] = [];
 
 export default function WorkflowEditor() {
+  const router = useRouter();
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -369,6 +372,43 @@ export default function WorkflowEditor() {
     message.success('워크플로우가 저장되었습니다.');
   }, [nodes, edges]);
 
+  // 워크플로우 불러오기
+  const loadWorkflow = useCallback(() => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    
+    input.onchange = (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      const file = target.files?.[0];
+      
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const result = event.target?.result as string;
+          const workflow = JSON.parse(result);
+          
+          if (workflow.nodes && workflow.edges) {
+            setNodes(workflow.nodes);
+            setEdges(workflow.edges);
+            message.success('워크플로우를 불러왔습니다.');
+          } else {
+            message.error('올바르지 않은 워크플로우 파일입니다.');
+          }
+        } catch (error) {
+          console.error('파일 로드 오류:', error);
+          message.error('파일을 읽을 수 없습니다.');
+        }
+      };
+      
+      reader.readAsText(file);
+    };
+    
+    input.click();
+  }, [setNodes, setEdges]);
+
   return (
     <div style={{ width: '100%', height: '100vh', display: 'flex', flexDirection: 'column' }}>
       {/* 헤더 */}
@@ -380,12 +420,17 @@ export default function WorkflowEditor() {
         justifyContent: 'space-between',
         alignItems: 'center'
       }}>
-        <Title level={3} style={{ margin: 0 }}>
-          워크플로우 빌더
-        </Title>
+        <Space>
+          <Button icon={<HomeOutlined />} onClick={() => router.push('/')}>
+            홈으로
+          </Button>
+          <Title level={3} style={{ margin: 0 }}>
+            워크플로우 빌더
+          </Title>
+        </Space>
         <Space>
           <Button icon={<LinkOutlined />} onClick={addEdge}>연결선 추가</Button>
-          <Button icon={<FolderOpenOutlined />}>불러오기</Button>
+          <Button icon={<FolderOpenOutlined />} onClick={loadWorkflow}>불러오기</Button>
           <Button onClick={calculateSequence}>순서 계산</Button>
           <Button onClick={autoLayout}>자동 정렬</Button>
           <Button icon={<SaveOutlined />} onClick={saveWorkflow}>저장</Button>

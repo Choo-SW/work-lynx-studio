@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Typography, Divider, Alert } from "antd";
-import { ArrowLeftOutlined, DownloadOutlined, EyeOutlined, LinkOutlined } from "@ant-design/icons";
+import { Button, Typography, Divider, Alert, message } from "antd";
+import { HomeOutlined, DownloadOutlined, EyeOutlined, LinkOutlined, FolderOpenOutlined } from "@ant-design/icons";
 import FormBuilder from "@/components/FormBuilder";
 
 const { Title } = Typography;
@@ -11,6 +11,21 @@ const { Title } = Typography;
 export default function ApprovalFormBuilderPage() {
   const router = useRouter();
   const [savedJson, setSavedJson] = useState<object | null>(null);
+  const [initialJson, setInitialJson] = useState<object | null>(null);
+
+  // 페이지 로드 시 localStorage에서 초기값 읽기
+  useEffect(() => {
+    const stored = localStorage.getItem('lastCreatedForm');
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        setInitialJson(parsed);
+        setSavedJson(parsed);
+      } catch (error) {
+        console.error('localStorage 읽기 오류:', error);
+      }
+    }
+  }, []);
 
   const handleSave = useCallback((json: object) => {
     const formWithCategory = {
@@ -37,6 +52,40 @@ export default function ApprovalFormBuilderPage() {
     }
   }, [savedJson]);
 
+  const handleLoad = useCallback(() => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    
+    input.onchange = (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      const file = target.files?.[0];
+      
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const result = event.target?.result as string;
+          const formJson = JSON.parse(result);
+          
+          // 상태 업데이트 - 즉시 화면에 반영됨
+          setInitialJson(formJson);
+          setSavedJson(formJson);
+          localStorage.setItem('lastCreatedForm', JSON.stringify(formJson, null, 2));
+          message.success('양식을 불러왔습니다.');
+        } catch (error) {
+          console.error('파일 로드 오류:', error);
+          message.error('파일을 읽을 수 없습니다.');
+        }
+      };
+      
+      reader.readAsText(file);
+    };
+    
+    input.click();
+  }, []);
+
   return (
     <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
       {/* 헤더 */}
@@ -50,10 +99,8 @@ export default function ApprovalFormBuilderPage() {
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <Button
-            type="link"
-            icon={<ArrowLeftOutlined />}
+            icon={<HomeOutlined />}
             onClick={() => router.push("/")}
-            style={{ paddingLeft: 0 }}
           >
             홈으로
           </Button>
@@ -71,6 +118,12 @@ export default function ApprovalFormBuilderPage() {
         </div>
         
         <div style={{ display: "flex", gap: 12 }}>
+          <Button
+            icon={<FolderOpenOutlined />}
+            onClick={handleLoad}
+          >
+            불러오기
+          </Button>
           <Button
             icon={<DownloadOutlined />}
             onClick={handleExport}
@@ -98,7 +151,7 @@ export default function ApprovalFormBuilderPage() {
 
       {/* Form Builder */}
       <div style={{ flex: 1, overflow: "hidden" }}>
-        <FormBuilder onSave={handleSave} />
+        <FormBuilder json={initialJson || undefined} onSave={handleSave} />
       </div>
 
       {/* 안내 메시지 */}

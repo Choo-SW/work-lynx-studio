@@ -1,9 +1,9 @@
 "use client";
 
 import React, { use, useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Spin, Result, Button, Card, message } from "antd";
-import { LoadingOutlined, ArrowLeftOutlined, FileTextOutlined } from "@ant-design/icons";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Spin, Result, Button, Card, message, Tag } from "antd";
+import { LoadingOutlined, ArrowLeftOutlined, FileTextOutlined, DesktopOutlined, TabletOutlined, MobileOutlined } from "@ant-design/icons";
 import SurveyComponent from "@/components/SurveyComponent";
 import { Model } from "survey-core";
 
@@ -27,6 +27,9 @@ function loadSurvey(id: string) {
 export default function SurveyPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const device = searchParams.get('device') || 'pc'; // pc, tablet, mobile
+  
   const [surveyJson, setSurveyJson] = useState<object | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -90,17 +93,32 @@ export default function SurveyPage({ params }: { params: Promise<{ id: string }>
     );
   }
 
+  // 디바이스별 아이콘과 레이블
+  const deviceInfo = {
+    pc: { icon: <DesktopOutlined />, label: 'PC 브라우저', maxWidth: 1000, padding: '32px 24px' },
+    tablet: { icon: <TabletOutlined />, label: '태블릿 브라우저', maxWidth: 768, padding: '24px 16px' },
+    mobile: { icon: <MobileOutlined />, label: '모바일 앱', maxWidth: 480, padding: '16px 12px' }
+  };
+
+  const currentDevice = deviceInfo[device as keyof typeof deviceInfo] || deviceInfo.pc;
+
   return (
-    <div style={{ minHeight: "100vh", background: "#f0f2f5", padding: "32px 24px" }}>
-      <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-        <Button
-          type="link"
-          icon={<ArrowLeftOutlined />}
-          onClick={() => router.push("/")}
-          style={{ marginBottom: 24, paddingLeft: 0 }}
-        >
-          뒤로 가기
-        </Button>
+    <div style={{ minHeight: "100vh", background: "#f0f2f5", padding: currentDevice.padding }}>
+      <div style={{ maxWidth: currentDevice.maxWidth, margin: "0 auto" }}>
+        {/* 디바이스 표시 태그 */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+          <Button
+            type="link"
+            icon={<ArrowLeftOutlined />}
+            onClick={() => router.push("/approval/select")}
+            style={{ paddingLeft: 0 }}
+          >
+            뒤로 가기
+          </Button>
+          <Tag icon={currentDevice.icon} color="blue" style={{ marginLeft: "auto" }}>
+            {currentDevice.label}
+          </Tag>
+        </div>
         
         {completed ? (
           <Card>

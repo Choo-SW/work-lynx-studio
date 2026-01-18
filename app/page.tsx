@@ -42,23 +42,23 @@ export default function Home() {
               Lynx Studio 기획서의 통합 시나리오를 구현한 실제 양식입니다.
             </Paragraph>
             
-            <Link href="/survey/expense-approval" style={{ textDecoration: "none" }}>
+            <Link href="/approval/select" style={{ textDecoration: "none" }}>
               <Card hoverable style={{ border: "2px solid #1890ff" }}>
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                     <FileTextOutlined style={{ fontSize: 32, color: "#1890ff" }} />
                     <Title level={4} style={{ margin: 0, color: "#1890ff" }}>
-                      지출결의서 (시나리오 4.1)
+                      지출결의서 시나리오 (결재작성)
                     </Title>
                   </div>
                   <Text type="secondary">
-                    Gateway Server를 통한 Legacy ERP 실시간 연동 시나리오
+                    전자결재 시스템의 실제 결재작성 화면을 경험해보세요
                   </Text>
                   <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                    <Text>✓ Progressive Disclosure - 프로젝트 선택 시 동적 필드 노출</Text>
+                    <Text>✓ 결재 서식 선택 화면 - 폴더 트리 구조</Text>
+                    <Text>✓ 지출결의서 선택 - Progressive Disclosure 적용</Text>
                     <Text>✓ 실시간 예산 조회 - Legacy ERP API 시뮬레이션</Text>
                     <Text>✓ 조건부 경고 - 예산 부족/초과 시 자동 알림</Text>
-                    <Text>✓ 동적 그리드 - 지출 항목 동적 추가/삭제</Text>
                   </div>
                 </div>
               </Card>
