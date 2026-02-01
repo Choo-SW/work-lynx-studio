@@ -35,6 +35,9 @@ const { TextArea } = Input;
 // 커스텀 노드 타입 매핑 (게시판용)
 const nodeTypes = {
   start: CustomNode,
+  review: CustomNode,
+  approval: CustomNode,
+  reject: CustomNode,
   publish: CustomNode,
   moderate: CustomNode,
   pin: CustomNode,
@@ -43,17 +46,104 @@ const nodeTypes = {
   end: CustomNode,
 };
 
-// 초기 노드
+const roleOptions = ['AUTHOR', 'APPROVER', 'ADMIN', 'REVIEWER'];
+
+// 초기 노드 (게시판 승인 흐름)
 const initialNodes: Node[] = [
   {
     id: '1',
     type: 'start',
-    position: { x: 250, y: 0 },
-    data: { label: '게시물 작성', description: '새 게시물 작성' },
+    position: { x: 200, y: 0 },
+    data: {
+      label: '작성',
+      description: '게시물 작성 시작',
+      statusKey: 'DRAFT',
+      actionKey: 'SAVE',
+      allowedRoles: ['AUTHOR'],
+    },
+  },
+  {
+    id: '2',
+    type: 'moderate',
+    position: { x: 200, y: 150 },
+    data: {
+      label: '임시저장',
+      description: '작성 중 임시 저장',
+      statusKey: 'TEMP_SAVE',
+      actionKey: 'SAVE',
+      allowedRoles: ['AUTHOR'],
+    },
+  },
+  {
+    id: '3',
+    type: 'review',
+    position: { x: 200, y: 300 },
+    data: {
+      label: '승인요청',
+      description: '승인 요청 단계',
+      statusKey: 'REQUEST_APPROVAL',
+      actionKey: 'REQUEST_APPROVAL',
+      allowedRoles: ['AUTHOR', 'REVIEWER'],
+    },
+  },
+  {
+    id: '4',
+    type: 'approval',
+    position: { x: 200, y: 450 },
+    data: {
+      label: '최종승인',
+      description: '최종 승인 처리',
+      statusKey: 'FINAL_APPROVAL',
+      actionKey: 'APPROVE',
+      allowedRoles: ['APPROVER', 'ADMIN'],
+    },
+  },
+  {
+    id: '5',
+    type: 'publish',
+    position: { x: 200, y: 600 },
+    data: {
+      label: '게시',
+      description: '게시판 공개',
+      statusKey: 'PUBLISHED',
+      actionKey: 'APPROVE',
+      allowedRoles: ['ADMIN'],
+    },
+  },
+  {
+    id: '6',
+    type: 'reject',
+    position: { x: 480, y: 300 },
+    data: {
+      label: '반려',
+      description: '반려 처리',
+      statusKey: 'REJECTED',
+      actionKey: 'REJECT',
+      allowedRoles: ['APPROVER', 'REVIEWER'],
+    },
+  },
+  {
+    id: '7',
+    type: 'end',
+    position: { x: 200, y: 750 },
+    data: {
+      label: '종료',
+      description: '게시 완료',
+      statusKey: 'DONE',
+    },
   },
 ];
 
-const initialEdges: Edge[] = [];
+const initialEdges: Edge[] = [
+  { id: 'e1-2', source: '1', target: '2', label: 'SAVE', type: 'smoothstep' },
+  { id: 'e2-3', source: '2', target: '3', label: 'REQUEST_APPROVAL', type: 'smoothstep' },
+  { id: 'e3-4', source: '3', target: '4', label: 'APPROVE', type: 'smoothstep' },
+  { id: 'e4-5', source: '4', target: '5', label: 'APPROVE', type: 'smoothstep' },
+  { id: 'e5-7', source: '5', target: '7', label: 'DONE', type: 'smoothstep' },
+  { id: 'e3-6', source: '3', target: '6', label: 'REJECT', type: 'smoothstep' },
+  { id: 'e4-6', source: '4', target: '6', label: 'REJECT', type: 'smoothstep' },
+  { id: 'e6-1', source: '6', target: '1', label: 'RETRY', type: 'smoothstep', animated: true },
+];
 
 export default function BoardWorkflowEditor() {
   const router = useRouter();
@@ -147,6 +237,9 @@ export default function BoardWorkflowEditor() {
     form.setFieldsValue({
       label: nodeData.label,
       description: nodeData.description,
+      statusKey: nodeData.statusKey,
+      actionKey: nodeData.actionKey,
+      allowedRoles: nodeData.allowedRoles,
       boardId: nodeData.boardConfig?.boardId,
       categoryId: nodeData.boardConfig?.categoryId,
       isPinned: nodeData.boardConfig?.isPinned,
@@ -158,13 +251,51 @@ export default function BoardWorkflowEditor() {
   }, [form]);
 
   const addNode = useCallback((type: NodeType) => {
+    const defaultData: Partial<WorkflowNodeData> = {
+      statusKey: undefined,
+      actionKey: undefined,
+      allowedRoles: [],
+    };
+
+    if (type === 'start') {
+      defaultData.statusKey = 'DRAFT';
+      defaultData.actionKey = 'SAVE';
+      defaultData.allowedRoles = ['AUTHOR'];
+    }
+    if (type === 'moderate') {
+      defaultData.statusKey = 'TEMP_SAVE';
+      defaultData.actionKey = 'SAVE';
+      defaultData.allowedRoles = ['AUTHOR'];
+    }
+    if (type === 'review') {
+      defaultData.statusKey = 'REQUEST_APPROVAL';
+      defaultData.actionKey = 'REQUEST_APPROVAL';
+      defaultData.allowedRoles = ['AUTHOR', 'REVIEWER'];
+    }
+    if (type === 'approval') {
+      defaultData.statusKey = 'FINAL_APPROVAL';
+      defaultData.actionKey = 'APPROVE';
+      defaultData.allowedRoles = ['APPROVER', 'ADMIN'];
+    }
+    if (type === 'reject') {
+      defaultData.statusKey = 'REJECTED';
+      defaultData.actionKey = 'REJECT';
+      defaultData.allowedRoles = ['APPROVER', 'REVIEWER'];
+    }
+    if (type === 'publish') {
+      defaultData.statusKey = 'PUBLISHED';
+      defaultData.actionKey = 'APPROVE';
+      defaultData.allowedRoles = ['ADMIN'];
+    }
+
     const newNode: Node = {
       id: `${nodes.length + 1}`,
       type,
       position: { x: 250, y: (nodes.length) * 150 },
       data: { 
         label: getNodeLabel(type),
-        description: '새 노드'
+        description: '새 노드',
+        ...defaultData,
       },
     };
     setNodes((nds) => [...nds, newNode]);
@@ -180,6 +311,9 @@ export default function BoardWorkflowEditor() {
             const updatedData: Partial<WorkflowNodeData> = {
               label: values.label,
               description: values.description,
+              statusKey: values.statusKey,
+              actionKey: values.actionKey,
+              allowedRoles: values.allowedRoles,
               boardConfig: {
                 boardId: values.boardId,
                 categoryId: values.categoryId,
@@ -295,7 +429,16 @@ export default function BoardWorkflowEditor() {
         flexWrap: 'wrap'
       }}>
         <Button size="small" icon={<PlusOutlined />} onClick={() => addNode('moderate')}>
-          검수
+          임시저장
+        </Button>
+        <Button size="small" icon={<PlusOutlined />} onClick={() => addNode('review')}>
+          승인요청
+        </Button>
+        <Button size="small" icon={<PlusOutlined />} onClick={() => addNode('approval')}>
+          최종승인
+        </Button>
+        <Button size="small" icon={<PlusOutlined />} onClick={() => addNode('reject')}>
+          반려
         </Button>
         <Button size="small" icon={<PlusOutlined />} onClick={() => addNode('publish')}>
           게시
@@ -377,6 +520,29 @@ export default function BoardWorkflowEditor() {
 
           <Form.Item label="설명" name="description">
             <TextArea rows={3} placeholder="노드에 대한 설명을 입력하세요" />
+          </Form.Item>
+
+          <Form.Item label="상태 키" name="statusKey">
+            <Input placeholder="예: DRAFT, TEMP_SAVE, REQUEST_APPROVAL" />
+          </Form.Item>
+
+          <Form.Item label="비즈니스 액션" name="actionKey">
+            <Select placeholder="액션 선택" allowClear>
+              <Select.Option value="SAVE">SAVE</Select.Option>
+              <Select.Option value="REQUEST_APPROVAL">REQUEST_APPROVAL</Select.Option>
+              <Select.Option value="APPROVE">APPROVE</Select.Option>
+              <Select.Option value="REJECT">REJECT</Select.Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item label="권한(Role)" name="allowedRoles">
+            <Select mode="multiple" placeholder="역할 선택">
+              {roleOptions.map((role) => (
+                <Select.Option key={role} value={role}>
+                  {role}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
 
           <Form.Item label="게시판 ID" name="boardId">
@@ -486,9 +652,12 @@ export default function BoardWorkflowEditor() {
 
 function getNodeLabel(type: NodeType): string {
   const labels: Record<string, string> = {
-    start: '게시물 작성',
+    start: '작성',
+    review: '승인요청',
+    approval: '최종승인',
+    reject: '반려',
     publish: '게시',
-    moderate: '검수',
+    moderate: '임시저장',
     pin: '상단 고정',
     archive: '보관',
     condition: '조건 분기',

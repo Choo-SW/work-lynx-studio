@@ -279,6 +279,28 @@ const CustomNode = memo(({ data, type }: NodeProps) => {
             </Tag>
           </div>
         )}
+
+        {nodeData.actionKey && (
+          <div style={{ marginTop: 8, display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+            <Tag color="geekblue">ACTION: {nodeData.actionKey}</Tag>
+          </div>
+        )}
+
+        {nodeData.statusKey && (
+          <div style={{ marginTop: 6, display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+            <Tag color="gold">STATUS: {nodeData.statusKey}</Tag>
+          </div>
+        )}
+
+        {nodeData.allowedRoles && nodeData.allowedRoles.length > 0 && (
+          <div style={{ marginTop: 6, display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+            {nodeData.allowedRoles.map((role) => (
+              <Tag key={role} color="purple">
+                {role}
+              </Tag>
+            ))}
+          </div>
+        )}
       </Card>
 
       <Handle type="source" position={Position.Bottom} />

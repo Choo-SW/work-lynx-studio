@@ -38,6 +38,9 @@ export interface WorkflowNodeData {
   label: string;
   description?: string;
   sequence?: number;        // 워크플로우 순서 (1, 2, 3...)
+  statusKey?: string;       // 상태 키 (예: DRAFT, TEMP_SAVE)
+  actionKey?: 'SAVE' | 'REQUEST_APPROVAL' | 'APPROVE' | 'REJECT';
+  allowedRoles?: string[];  // 권한 제어 (역할 리스트)
   // 검토자/합의자/승인자 정보
   approver?: {
     id: string;
