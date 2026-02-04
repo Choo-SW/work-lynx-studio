@@ -53,7 +53,7 @@ const initialNodes: Node[] = [
   {
     id: '1',
     type: 'start',
-    position: { x: 200, y: 0 },
+    position: { x: 100, y: 150 },
     data: {
       label: '작성',
       description: '게시물 작성 시작',
@@ -65,7 +65,7 @@ const initialNodes: Node[] = [
   {
     id: '2',
     type: 'moderate',
-    position: { x: 200, y: 150 },
+    position: { x: 400, y: 150 },
     data: {
       label: '임시저장',
       description: '작성 중 임시 저장',
@@ -77,7 +77,7 @@ const initialNodes: Node[] = [
   {
     id: '3',
     type: 'review',
-    position: { x: 200, y: 300 },
+    position: { x: 700, y: 150 },
     data: {
       label: '승인요청',
       description: '승인 요청 단계',
@@ -89,7 +89,7 @@ const initialNodes: Node[] = [
   {
     id: '4',
     type: 'approval',
-    position: { x: 200, y: 450 },
+    position: { x: 1000, y: 150 },
     data: {
       label: '최종승인',
       description: '최종 승인 처리',
@@ -101,7 +101,7 @@ const initialNodes: Node[] = [
   {
     id: '5',
     type: 'publish',
-    position: { x: 200, y: 600 },
+    position: { x: 1300, y: 150 },
     data: {
       label: '게시',
       description: '게시판 공개',
@@ -113,7 +113,7 @@ const initialNodes: Node[] = [
   {
     id: '6',
     type: 'reject',
-    position: { x: 480, y: 300 },
+    position: { x: 700, y: 400 },
     data: {
       label: '반려',
       description: '반려 처리',
@@ -125,7 +125,7 @@ const initialNodes: Node[] = [
   {
     id: '7',
     type: 'end',
-    position: { x: 200, y: 750 },
+    position: { x: 1600, y: 150 },
     data: {
       label: '종료',
       description: '게시 완료',
@@ -291,7 +291,7 @@ export default function BoardWorkflowEditor() {
     const newNode: Node = {
       id: `${nodes.length + 1}`,
       type,
-      position: { x: 250, y: (nodes.length) * 150 },
+      position: { x: (nodes.length) * 300 + 100, y: 150 },
       data: { 
         label: getNodeLabel(type),
         description: '새 노드',
@@ -470,6 +470,8 @@ export default function BoardWorkflowEditor() {
           onEdgesDelete={onEdgesDelete}
           nodeTypes={nodeTypes}
           fitView
+          fitViewOptions={{ padding: 0.3, minZoom: 0.5, maxZoom: 1 }}
+          defaultViewport={{ x: 0, y: 0, zoom: 0.7 }}
           deleteKeyCode="Delete"
           connectionMode={ConnectionMode.Loose}
         >
