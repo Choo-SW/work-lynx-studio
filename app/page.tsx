@@ -14,6 +14,7 @@ import {
   CommentOutlined,
   BulbOutlined,
   FolderOpenOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 
 const { Title, Paragraph, Text } = Typography;
@@ -42,27 +43,107 @@ export default function Home() {
               Lynx Studio 기획서의 통합 시나리오를 구현한 실제 양식입니다.
             </Paragraph>
             
-            <Link href="/approval/select" style={{ textDecoration: "none" }}>
-              <Card hoverable style={{ border: "2px solid #1890ff" }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                    <FileTextOutlined style={{ fontSize: 32, color: "#1890ff" }} />
-                    <Title level={4} style={{ margin: 0, color: "#1890ff" }}>
-                      지출결의서 시나리오 (결재작성)
-                    </Title>
-                  </div>
-                  <Text type="secondary">
-                    전자결재 시스템의 실제 결재작성 화면을 경험해보세요
-                  </Text>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                    <Text>✓ 결재 서식 선택 화면 - 폴더 트리 구조</Text>
-                    <Text>✓ 지출결의서 선택 - Progressive Disclosure 적용</Text>
-                    <Text>✓ 실시간 예산 조회 - Legacy ERP API 시뮬레이션</Text>
-                    <Text>✓ 조건부 경고 - 예산 부족/초과 시 자동 알림</Text>
-                  </div>
-                </div>
-              </Card>
-            </Link>
+            <Row gutter={[16, 16]}>
+              {/* 지출결의서 시나리오 */}
+              <Col xs={24} md={12}>
+                <Link href="/approval/select" style={{ textDecoration: "none" }}>
+                  <Card hoverable style={{ border: "2px solid #1890ff", height: '100%' }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <FileTextOutlined style={{ fontSize: 32, color: "#1890ff" }} />
+                        <Title level={4} style={{ margin: 0, color: "#1890ff" }}>
+                          지출결의서 시나리오
+                        </Title>
+                      </div>
+                      <Text type="secondary">
+                        전자결재 시스템의 실제 결재작성 화면
+                      </Text>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                        <Text>✓ 결재 서식 선택 - 폴더 트리 구조</Text>
+                        <Text>✓ Progressive Disclosure 적용</Text>
+                        <Text>✓ Legacy ERP API 연동</Text>
+                        <Text>✓ 조건부 경고 - 예산 초과 알림</Text>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              </Col>
+
+              {/* 게시판 작성 시나리오 */}
+              <Col xs={24} md={12}>
+                <Link href="/board/promo" style={{ textDecoration: "none" }}>
+                  <Card hoverable style={{ border: "2px solid #52c41a", height: '100%' }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <CommentOutlined style={{ fontSize: 32, color: "#52c41a" }} />
+                        <Title level={4} style={{ margin: 0, color: "#52c41a" }}>
+                          게시판 작성 시나리오
+                        </Title>
+                      </div>
+                      <Text type="secondary">
+                        게시판 콘텐츠 작성 및 승인 프로세스
+                      </Text>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                        <Text>✓ 게시물 목록 - 그리드 형식</Text>
+                        <Text>✓ 게시물 작성 - 리치 에디터</Text>
+                        <Text>✓ 카테고리 및 중요도 설정</Text>
+                        <Text>✓ 임시저장 및 승인 요청</Text>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              </Col>
+            </Row>
+          </Card>
+
+          {/* 시스템 관리 */}
+          <Card title={<><SettingOutlined /> ⚙️ 시스템 관리</>}>
+            <Paragraph>
+              시스템 전반의 설정을 관리합니다.
+            </Paragraph>
+            
+            <Row gutter={[16, 16]}>
+              <Col xs={24} sm={12}>
+                <Link href="/system/approval-management" style={{ textDecoration: "none" }}>
+                  <Card hoverable style={{ height: "100%", border: "2px solid #722ed1" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <FileTextOutlined style={{ fontSize: 32, color: "#722ed1" }} />
+                        <Title level={4} style={{ margin: 0, color: "#722ed1" }}>
+                          📄 전자결재 양식 관리
+                        </Title>
+                      </div>
+                      <Text type="secondary">전자결재 양식 등록, 수정, 삭제 및 Builder 연결</Text>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                        <Tag color="#722ed1">트리 구조</Tag>
+                        <Tag color="#722ed1">결재선</Tag>
+                        <Tag color="#722ed1">워크플로우</Tag>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              </Col>
+              <Col xs={24} sm={12}>
+                <Link href="/system/board-management" style={{ textDecoration: "none" }}>
+                  <Card hoverable style={{ height: "100%", border: "2px solid #1890ff" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <CommentOutlined style={{ fontSize: 32, color: "#1890ff" }} />
+                        <Title level={4} style={{ margin: 0, color: "#1890ff" }}>
+                          📋 게시판 관리
+                        </Title>
+                      </div>
+                      <Text type="secondary">게시판 등록, 수정, 삭제 및 FormBuilder 연결</Text>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                        <Tag color="#1890ff">트리 구조</Tag>
+                        <Tag color="#1890ff">기본옵션</Tag>
+                        <Tag color="#1890ff">양식 연결</Tag>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              </Col>
+            </Row>
           </Card>
 
           {/* Form Builder */}

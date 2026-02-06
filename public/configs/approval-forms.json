@@ -1,0 +1,422 @@
+{
+  "forms": [
+    {
+      "id": "approval-root",
+      "name": "전자결재",
+      "code": "ROOT",
+      "isFolder": true,
+      "parentId": null,
+      "options": {
+        "isActive": true,
+        "requireAttachment": false,
+        "allowDraft": true,
+        "autoNumbering": true,
+        "retentionPeriod": 10,
+        "securityLevel": "INTERNAL",
+        "allowEmergency": false,
+        "allowProxy": false,
+        "allowAgree": false
+      },
+      "approvalLine": {
+        "minApprovers": 1,
+        "maxApprovers": 10,
+        "allowSkip": false,
+        "allowReturn": true
+      },
+      "permissions": {
+        "draft": ["USER"],
+        "approve": ["MANAGER", "ADMIN"],
+        "view": ["ALL"],
+        "manage": ["ADMIN"]
+      },
+      "createdAt": "2026-02-06T00:00:00.000Z",
+      "createdBy": "system",
+      "order": 0
+    },
+    {
+      "id": "approval-common",
+      "name": "공통",
+      "code": "COMMON",
+      "description": "공통 결재 양식",
+      "icon": "FileTextOutlined",
+      "isFolder": true,
+      "parentId": "approval-root",
+      "options": {
+        "isActive": true,
+        "requireAttachment": false,
+        "allowDraft": true,
+        "autoNumbering": true,
+        "retentionPeriod": 10,
+        "securityLevel": "INTERNAL",
+        "allowEmergency": false,
+        "allowProxy": true,
+        "allowAgree": true
+      },
+      "approvalLine": {
+        "minApprovers": 2,
+        "maxApprovers": 5,
+        "allowSkip": false,
+        "allowReturn": true
+      },
+      "permissions": {
+        "draft": ["USER"],
+        "approve": ["MANAGER", "ADMIN"],
+        "view": ["ALL"],
+        "manage": ["ADMIN"]
+      },
+      "createdAt": "2026-02-06T00:00:00.000Z",
+      "createdBy": "admin",
+      "order": 1
+    },
+    {
+      "id": "approval-common-draft",
+      "name": "기안문",
+      "code": "DRAFT",
+      "description": "일반 기안 문서",
+      "icon": "FileTextOutlined",
+      "isFolder": false,
+      "parentId": "approval-common",
+      "options": {
+        "isActive": true,
+        "requireAttachment": false,
+        "allowDraft": true,
+        "autoNumbering": true,
+        "numberingPrefix": "DFT",
+        "retentionPeriod": 10,
+        "securityLevel": "INTERNAL",
+        "allowEmergency": true,
+        "allowProxy": true,
+        "allowAgree": true
+      },
+      "formBuilderId": "approval-draft",
+      "formBuilderName": "기안문 양식",
+      "workflowId": "approval-workflow",
+      "workflowName": "일반 결재 워크플로우",
+      "approvalLine": {
+        "minApprovers": 2,
+        "maxApprovers": 5,
+        "allowSkip": false,
+        "allowReturn": true
+      },
+      "permissions": {
+        "draft": ["USER"],
+        "approve": ["MANAGER", "DIRECTOR", "ADMIN"],
+        "view": ["ALL"],
+        "manage": ["ADMIN"]
+      },
+      "createdAt": "2026-02-06T00:00:00.000Z",
+      "createdBy": "admin",
+      "order": 1
+    },
+    {
+      "id": "approval-common-cooperation",
+      "name": "협조문",
+      "code": "COOPERATION",
+      "description": "부서간 협조 요청 문서",
+      "icon": "TeamOutlined",
+      "isFolder": false,
+      "parentId": "approval-common",
+      "options": {
+        "isActive": true,
+        "requireAttachment": true,
+        "allowDraft": true,
+        "autoNumbering": true,
+        "numberingPrefix": "COOP",
+        "retentionPeriod": 5,
+        "securityLevel": "INTERNAL",
+        "allowEmergency": false,
+        "allowProxy": true,
+        "allowAgree": true
+      },
+      "formBuilderId": "approval-cooperation",
+      "formBuilderName": "협조문 양식",
+      "workflowId": "approval-workflow",
+      "workflowName": "일반 결재 워크플로우",
+      "approvalLine": {
+        "minApprovers": 3,
+        "maxApprovers": 7,
+        "allowSkip": false,
+        "allowReturn": true
+      },
+      "permissions": {
+        "draft": ["USER"],
+        "approve": ["MANAGER", "DIRECTOR", "ADMIN"],
+        "view": ["ALL"],
+        "manage": ["ADMIN"]
+      },
+      "createdAt": "2026-02-06T00:00:00.000Z",
+      "createdBy": "admin",
+      "order": 2
+    },
+    {
+      "id": "approval-common-report",
+      "name": "보고서",
+      "code": "REPORT",
+      "description": "업무 보고서",
+      "icon": "FileTextOutlined",
+      "isFolder": false,
+      "parentId": "approval-common",
+      "options": {
+        "isActive": true,
+        "requireAttachment": true,
+        "allowDraft": true,
+        "autoNumbering": true,
+        "numberingPrefix": "RPT",
+        "retentionPeriod": 10,
+        "securityLevel": "INTERNAL",
+        "allowEmergency": false,
+        "allowProxy": true,
+        "allowAgree": false
+      },
+      "formBuilderId": "approval-report",
+      "formBuilderName": "보고서 양식",
+      "workflowId": "approval-workflow",
+      "workflowName": "일반 결재 워크플로우",
+      "approvalLine": {
+        "minApprovers": 1,
+        "maxApprovers": 3,
+        "allowSkip": false,
+        "allowReturn": true
+      },
+      "permissions": {
+        "draft": ["USER"],
+        "approve": ["MANAGER", "DIRECTOR", "ADMIN"],
+        "view": ["USER"],
+        "manage": ["ADMIN"]
+      },
+      "createdAt": "2026-02-06T00:00:00.000Z",
+      "createdBy": "admin",
+      "order": 3
+    },
+    {
+      "id": "approval-request",
+      "name": "신청",
+      "code": "REQUEST",
+      "description": "각종 신청 양식",
+      "icon": "FormOutlined",
+      "isFolder": true,
+      "parentId": "approval-root",
+      "options": {
+        "isActive": true,
+        "requireAttachment": false,
+        "allowDraft": true,
+        "autoNumbering": true,
+        "retentionPeriod": 7,
+        "securityLevel": "INTERNAL",
+        "allowEmergency": true,
+        "allowProxy": false,
+        "allowAgree": false
+      },
+      "approvalLine": {
+        "minApprovers": 1,
+        "maxApprovers": 3,
+        "allowSkip": false,
+        "allowReturn": true
+      },
+      "permissions": {
+        "draft": ["USER"],
+        "approve": ["MANAGER", "HR", "ADMIN"],
+        "view": ["USER"],
+        "manage": ["ADMIN"]
+      },
+      "createdAt": "2026-02-06T00:00:00.000Z",
+      "createdBy": "admin",
+      "order": 2
+    },
+    {
+      "id": "approval-request-leave",
+      "name": "근태계",
+      "code": "LEAVE",
+      "description": "휴가, 외근, 출장 등 근태 신청",
+      "icon": "CalendarOutlined",
+      "isFolder": false,
+      "parentId": "approval-request",
+      "options": {
+        "isActive": true,
+        "requireAttachment": false,
+        "allowDraft": true,
+        "autoNumbering": true,
+        "numberingPrefix": "LV",
+        "retentionPeriod": 7,
+        "securityLevel": "INTERNAL",
+        "allowEmergency": true,
+        "allowProxy": false,
+        "allowAgree": false
+      },
+      "formBuilderId": "approval-leave",
+      "formBuilderName": "근태계 양식",
+      "workflowId": "simple-approval-workflow",
+      "workflowName": "단순 승인 워크플로우",
+      "approvalLine": {
+        "minApprovers": 1,
+        "maxApprovers": 2,
+        "allowSkip": false,
+        "allowReturn": true
+      },
+      "permissions": {
+        "draft": ["USER"],
+        "approve": ["MANAGER", "HR", "ADMIN"],
+        "view": ["USER"],
+        "manage": ["ADMIN"]
+      },
+      "createdAt": "2026-02-06T00:00:00.000Z",
+      "createdBy": "admin",
+      "order": 1
+    },
+    {
+      "id": "approval-request-certificate",
+      "name": "증명서",
+      "code": "CERTIFICATE",
+      "description": "재직, 경력, 소득 증명서 신청",
+      "icon": "SafetyCertificateOutlined",
+      "isFolder": false,
+      "parentId": "approval-request",
+      "options": {
+        "isActive": true,
+        "requireAttachment": false,
+        "allowDraft": true,
+        "autoNumbering": true,
+        "numberingPrefix": "CERT",
+        "retentionPeriod": 5,
+        "securityLevel": "CONFIDENTIAL",
+        "allowEmergency": false,
+        "allowProxy": false,
+        "allowAgree": false
+      },
+      "formBuilderId": "approval-certificate",
+      "formBuilderName": "증명서 양식",
+      "workflowId": "simple-approval-workflow",
+      "workflowName": "단순 승인 워크플로우",
+      "approvalLine": {
+        "minApprovers": 1,
+        "maxApprovers": 2,
+        "allowSkip": false,
+        "allowReturn": false
+      },
+      "permissions": {
+        "draft": ["USER"],
+        "approve": ["HR", "ADMIN"],
+        "view": ["USER"],
+        "manage": ["ADMIN"]
+      },
+      "createdAt": "2026-02-06T00:00:00.000Z",
+      "createdBy": "admin",
+      "order": 2
+    },
+    {
+      "id": "approval-finance",
+      "name": "재경",
+      "code": "FINANCE",
+      "description": "재무 및 경리 관련 양식",
+      "icon": "DollarOutlined",
+      "isFolder": true,
+      "parentId": "approval-root",
+      "options": {
+        "isActive": true,
+        "requireAttachment": true,
+        "allowDraft": true,
+        "autoNumbering": true,
+        "retentionPeriod": 10,
+        "securityLevel": "CONFIDENTIAL",
+        "allowEmergency": false,
+        "allowProxy": false,
+        "allowAgree": true
+      },
+      "approvalLine": {
+        "minApprovers": 3,
+        "maxApprovers": 7,
+        "allowSkip": false,
+        "allowReturn": true
+      },
+      "permissions": {
+        "draft": ["USER"],
+        "approve": ["MANAGER", "FINANCE", "CFO", "ADMIN"],
+        "view": ["USER"],
+        "manage": ["ADMIN"]
+      },
+      "createdAt": "2026-02-06T00:00:00.000Z",
+      "createdBy": "admin",
+      "order": 3
+    },
+    {
+      "id": "approval-finance-expense",
+      "name": "지출결의서",
+      "code": "EXPENSE",
+      "description": "지출 결의 및 승인",
+      "icon": "DollarOutlined",
+      "isFolder": false,
+      "parentId": "approval-finance",
+      "options": {
+        "isActive": true,
+        "requireAttachment": true,
+        "allowDraft": true,
+        "autoNumbering": true,
+        "numberingPrefix": "EXP",
+        "retentionPeriod": 10,
+        "securityLevel": "CONFIDENTIAL",
+        "allowEmergency": false,
+        "allowProxy": false,
+        "allowAgree": true
+      },
+      "formBuilderId": "approval-expense",
+      "formBuilderName": "지출결의서 양식",
+      "workflowId": "finance-workflow",
+      "workflowName": "재무 승인 워크플로우",
+      "approvalLine": {
+        "minApprovers": 3,
+        "maxApprovers": 7,
+        "allowSkip": false,
+        "allowReturn": true
+      },
+      "permissions": {
+        "draft": ["USER"],
+        "approve": ["MANAGER", "FINANCE", "CFO", "ADMIN"],
+        "view": ["USER"],
+        "manage": ["ADMIN"]
+      },
+      "createdAt": "2026-02-06T00:00:00.000Z",
+      "createdBy": "admin",
+      "order": 1
+    },
+    {
+      "id": "approval-finance-purchase",
+      "name": "매입결의서",
+      "code": "PURCHASE",
+      "description": "매입 결의 및 승인",
+      "icon": "ShoppingCartOutlined",
+      "isFolder": false,
+      "parentId": "approval-finance",
+      "options": {
+        "isActive": true,
+        "requireAttachment": true,
+        "allowDraft": true,
+        "autoNumbering": true,
+        "numberingPrefix": "PUR",
+        "retentionPeriod": 10,
+        "securityLevel": "CONFIDENTIAL",
+        "allowEmergency": false,
+        "allowProxy": false,
+        "allowAgree": true
+      },
+      "formBuilderId": "approval-purchase",
+      "formBuilderName": "매입결의서 양식",
+      "workflowId": "finance-workflow",
+      "workflowName": "재무 승인 워크플로우",
+      "approvalLine": {
+        "minApprovers": 3,
+        "maxApprovers": 7,
+        "allowSkip": false,
+        "allowReturn": true
+      },
+      "permissions": {
+        "draft": ["USER"],
+        "approve": ["MANAGER", "FINANCE", "CFO", "ADMIN"],
+        "view": ["USER"],
+        "manage": ["ADMIN"]
+      },
+      "createdAt": "2026-02-06T00:00:00.000Z",
+      "createdBy": "admin",
+      "order": 2
+    }
+  ]
+}

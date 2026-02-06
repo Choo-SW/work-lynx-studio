@@ -133,3 +133,34 @@ export interface Workflow {
   createdAt: Date;
   updatedAt: Date;
 }
+
+// 워크플로우 정의 (JSON 저장용)
+export interface WorkflowDefinition {
+  category: string;
+  nodes: WorkflowNode[];
+  edges: WorkflowEdge[];
+  timestamp: string;
+}
+
+// 게시물 문서 상태
+export interface BoardDocument {
+  id: string;
+  title: string;
+  content: string;
+  category: string;
+  statusKey: string; // 현재 워크플로우 상태
+  author: string;
+  createdAt: string;
+  updatedAt: string;
+  viewCount: number;
+}
+
+// 사용자 역할
+export type UserRole = 'AUTHOR' | 'REVIEWER' | 'APPROVER' | 'ADMIN';
+
+// 워크플로우 액션 결과
+export interface WorkflowActionResult {
+  success: boolean;
+  newStatusKey?: string;
+  message?: string;
+}

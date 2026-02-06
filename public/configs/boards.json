@@ -1,0 +1,134 @@
+{
+  "boards": [
+    {
+      "id": "board-root",
+      "name": "게시판",
+      "code": "ROOT",
+      "isFolder": true,
+      "parentId": null,
+      "options": {
+        "isActive": true,
+        "allowAnonymous": false,
+        "requireApproval": false,
+        "allowAttachment": true,
+        "maxAttachmentSize": 10,
+        "maxAttachmentCount": 5,
+        "allowComment": true,
+        "allowReply": true,
+        "useCategory": false,
+        "useTags": false,
+        "useNotification": false
+      },
+      "permissions": {
+        "read": ["ALL"],
+        "write": ["USER"],
+        "manage": ["ADMIN"]
+      },
+      "createdAt": "2026-02-06T00:00:00.000Z",
+      "createdBy": "system",
+      "order": 0
+    },
+    {
+      "id": "board-notice",
+      "name": "공지사항",
+      "code": "NOTICE",
+      "description": "회사 공지사항 게시판",
+      "icon": "NotificationOutlined",
+      "isFolder": false,
+      "parentId": "board-root",
+      "options": {
+        "isActive": true,
+        "allowAnonymous": false,
+        "requireApproval": true,
+        "allowAttachment": true,
+        "maxAttachmentSize": 10,
+        "maxAttachmentCount": 5,
+        "allowComment": true,
+        "allowReply": false,
+        "useCategory": true,
+        "categories": ["일반공지", "중요공지", "긴급공지"],
+        "useTags": true,
+        "useNotification": true
+      },
+      "formBuilderId": "board-basic",
+      "formBuilderName": "게시판 기본 양식",
+      "workflowId": "board-workflow",
+      "workflowName": "게시판 승인 워크플로우",
+      "permissions": {
+        "read": ["ALL"],
+        "write": ["USER"],
+        "manage": ["ADMIN"]
+      },
+      "createdAt": "2026-02-06T00:00:00.000Z",
+      "createdBy": "admin",
+      "order": 1
+    },
+    {
+      "id": "board-promo",
+      "name": "홍보뉴스",
+      "code": "PROMO",
+      "description": "홍보 및 뉴스 게시판",
+      "icon": "BulbOutlined",
+      "isFolder": false,
+      "parentId": "board-root",
+      "options": {
+        "isActive": true,
+        "allowAnonymous": false,
+        "requireApproval": true,
+        "allowAttachment": true,
+        "maxAttachmentSize": 20,
+        "maxAttachmentCount": 10,
+        "allowComment": true,
+        "allowReply": true,
+        "useCategory": true,
+        "categories": ["홍보", "뉴스", "이벤트"],
+        "useTags": true,
+        "useNotification": false
+      },
+      "formBuilderId": "board-basic",
+      "formBuilderName": "게시판 기본 양식",
+      "workflowId": "board-workflow",
+      "workflowName": "게시판 승인 워크플로우",
+      "permissions": {
+        "read": ["ALL"],
+        "write": ["USER"],
+        "manage": ["ADMIN"]
+      },
+      "createdAt": "2026-02-06T00:00:00.000Z",
+      "createdBy": "admin",
+      "order": 2
+    },
+    {
+      "id": "board-free",
+      "name": "자유게시판",
+      "code": "FREE",
+      "description": "자유롭게 의견을 나누는 게시판",
+      "icon": "TeamOutlined",
+      "isFolder": false,
+      "parentId": "board-root",
+      "options": {
+        "isActive": true,
+        "allowAnonymous": false,
+        "requireApproval": false,
+        "allowAttachment": true,
+        "maxAttachmentSize": 5,
+        "maxAttachmentCount": 3,
+        "allowComment": true,
+        "allowReply": true,
+        "useCategory": false,
+        "useTags": true,
+        "useNotification": false
+      },
+      "formBuilderId": "board-basic",
+      "formBuilderName": "게시판 기본 양식",
+      "permissions": {
+        "read": ["ALL"],
+        "write": ["USER"],
+        "manage": ["ADMIN"]
+      },
+      "createdAt": "2026-02-06T00:00:00.000Z",
+      "createdBy": "admin",
+      "order": 3
+    }
+  ]
+}
